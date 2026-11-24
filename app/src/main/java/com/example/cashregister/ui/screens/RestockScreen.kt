@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -20,12 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cashregister.data.model.Product
 import com.example.cashregister.viewmodel.CashRegisterViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestockScreen(
     viewModel: CashRegisterViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
@@ -43,8 +43,8 @@ fun RestockScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF00BCD4),
                     titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
+                    navigationIconContentColor = Color.White,
+                ),
             )
         }
     ) { padding ->
@@ -58,7 +58,7 @@ fun RestockScreen(
                 text = if (selectedProduct != null) "Selected: ${selectedProduct?.name} (Current Stock: ${selectedProduct?.quantity})" else "Please select a product below",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
-                color = if (selectedProduct != null) Color(0xFF00838F) else Color.Red
+                color = if (selectedProduct != null) Color(0xFF00838F) else Color.Red,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -73,21 +73,21 @@ fun RestockScreen(
                 label = { Text("Enter New Quantity") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Button(
                     onClick = {
                         val product = selectedProduct
                         val amount = quantityInput.toIntOrNull()
 
-                        if (product == null || amount == null) {
+                        if ((product == null) || (amount == null)) {
                             Toast.makeText(context, "All fields are REQUIRED", Toast.LENGTH_SHORT).show()
                             return@Button
                         }
@@ -103,7 +103,7 @@ fun RestockScreen(
                         }
                     },
                     modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BCD4))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BCD4)),
                 ) {
                     Text("OK", color = Color.White)
                 }
@@ -111,7 +111,7 @@ fun RestockScreen(
                 Button(
                     onClick = onBack,
                     modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BCD4))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BCD4)),
                 ) {
                     Text("CANCEL", color = Color.White)
                 }
@@ -120,7 +120,7 @@ fun RestockScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             LazyColumn(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 items(viewModel.products) { product ->
                     val isSelected = selectedProduct?.id == product.id
@@ -129,19 +129,19 @@ fun RestockScreen(
                             .fillMaxWidth()
                             .clickable { selectedProduct = product }
                             .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column {
                             Text(
                                 text = product.name,
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                                color = if (isSelected) Color(0xFF00568F) else Color.Unspecified
+                                color = if (isSelected) Color(0xFF00568F) else Color.Unspecified,
                             )
-                            Text(String.format("%.2f", product.price), color = Color.Gray)
+                            Text(String.format(Locale.US, "%.2f", product.price), color = Color.Gray)
                         }
                         Text(
                             text = product.quantity.toString(),
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                         )
                     }
                 }

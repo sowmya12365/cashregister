@@ -16,6 +16,7 @@ class ProductRepository {
 
     fun getAllProducts(): List<Product> = products.toList()
 
+    @Suppress("unused")
     fun getProductById(id: Int): Product? = products.find { it.id == id }
 
     fun updateQuantity(productId: Int, newQuantity: Int) {

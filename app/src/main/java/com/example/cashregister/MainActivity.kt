@@ -35,12 +35,12 @@ fun CashRegisterApp() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.HOME
+        startDestination = Routes.HOME,
     ) {
         composable(Routes.HOME) {
             HomeScreen(
                 viewModel = viewModel,
-                onManagerClick = { navController.navigate(Routes.MANAGER) }
+                onManagerClick = { navController.navigate(Routes.MANAGER) },
             )
         }
 
@@ -48,7 +48,7 @@ fun CashRegisterApp() {
             ManagerScreen(
                 onHistoryClick = { navController.navigate(Routes.HISTORY) },
                 onRestockClick = { navController.navigate(Routes.RESTOCK) },
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
             )
         }
 
@@ -58,22 +58,19 @@ fun CashRegisterApp() {
                 onItemClick = { index ->
                     navController.navigate(Routes.historyDetail(index))
                 },
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
             )
         }
 
         composable(
             route = Routes.HISTORY_DETAIL,
-            arguments = listOf(navArgument("index") { type = NavType.IntType })
+            arguments = listOf(navArgument("index") { type = NavType.IntType }),
         ) { backStackEntry ->
             val index = backStackEntry.arguments?.getInt("index") ?: 0
-            val purchase = viewModel.history.getOrNull(index)
-
-            if (purchase != null) {
-                HistoryDetailScreen(
-                    purchase = purchase,
-                    onBack = { navController.popBackStack() }
-                )
+            viewModel.history.getOrNull(index)?.let { purchase ->
+                HistoryDetailScreen(purchase = purchase) {
+                    navController.popBackStack()
+                }
             }
         }
 
@@ -83,7 +80,7 @@ fun CashRegisterApp() {
                 onBack = {
                     viewModel.refreshProducts()
                     navController.popBackStack()
-                }
+                },
             )
         }
     }

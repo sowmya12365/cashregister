@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cashregister.data.model.Product
 import com.example.cashregister.viewmodel.CashRegisterViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -333,7 +334,7 @@ fun ProductRow(
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                     color = if (isSelected) Color(0xFF00838F) else Color.Unspecified
                 )
-                Text(String.format("%.2f", product.price), color = Color.Gray)
+                Text(String.format(Locale.US, "%.2f", product.price), color = Color.Gray)
             }
             Text(
                 text = product.quantity.toString(),

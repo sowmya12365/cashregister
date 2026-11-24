@@ -50,14 +50,14 @@ class CashRegisterViewModel : ViewModel() {
     private fun calculateTotal() {
         val qty = quantityText.toIntOrNull() ?: 0
         val price = selectedProduct?.price ?: 0.0
-        totalText = String.format("%.2f", qty * price)
+        totalText = String.format(Locale.US, "%.2f", qty * price)
     }
 
     fun buy(onSuccess: (String) -> Unit, onError: (String) -> Unit) {
         val product = selectedProduct
         val qty = quantityText.toIntOrNull()
 
-        if (product == null || qty == null || qty == 0) {
+        if ((product == null) || (qty == null) || (qty == 0)) {
             onError("All fields are required!!")
             return
         }
@@ -76,7 +76,7 @@ class CashRegisterViewModel : ViewModel() {
             productName = product.name,
             quantityBought = qty,
             totalPrice = qty * product.price,
-            purchaseDate = date
+            purchaseDate = date,
         )
         repository.addPurchase(purchase)
 
@@ -89,7 +89,8 @@ class CashRegisterViewModel : ViewModel() {
         quantityText = ""
         totalText = "0.00"
 
-        onSuccess("Thank You for your purchase\nYour purchase is $qty ${product.name} for ${String.format("%.2f", purchase.totalPrice)}")
+        val formattedPrice = String.format(Locale.US, "%.2f", purchase.totalPrice)
+        onSuccess("Thank You for your purchase\nYour purchase is $qty ${product.name} for $formattedPrice")
     }
 
     // ---- Restock ----

@@ -15,13 +15,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cashregister.data.model.Purchase
 import com.example.cashregister.viewmodel.CashRegisterViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
     viewModel: CashRegisterViewModel,
     onItemClick: (Int) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -35,8 +36,8 @@ fun HistoryScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF00BCD4),
                     titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
+                    navigationIconContentColor = Color.White,
+                ),
             )
         }
     ) { padding ->
@@ -44,7 +45,7 @@ fun HistoryScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             itemsIndexed(viewModel.history) { index, purchase ->
                 HistoryRow(purchase = purchase, onClick = { onItemClick(index) })
@@ -61,15 +62,15 @@ fun HistoryRow(purchase: Purchase, onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable { onClick() }
             .padding(vertical = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column {
             Text(purchase.productName, fontWeight = FontWeight.Medium)
             Text(purchase.quantityBought.toString(), color = Color.Gray)
         }
         Text(
-            text = String.format("%.2f", purchase.totalPrice),
-            fontSize = 16.sp
+            text = String.format(Locale.US, "%.2f", purchase.totalPrice),
+            fontSize = 16.sp,
         )
     }
 }

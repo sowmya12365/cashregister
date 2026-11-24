@@ -11,12 +11,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cashregister.data.model.Purchase
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryDetailScreen(
     purchase: Purchase,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -30,8 +31,8 @@ fun HistoryDetailScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF00BCD4),
                     titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
+                    navigationIconContentColor = Color.White,
+                ),
             )
         }
     ) { padding ->
@@ -41,11 +42,11 @@ fun HistoryDetailScreen(
                 .padding(padding)
                 .padding(24.dp),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
+            horizontalAlignment = Alignment.Start,
         ) {
             Text("Product: ${purchase.productName}", fontSize = 18.sp)
             Spacer(modifier = Modifier.height(12.dp))
-            Text("Price: ${String.format("%.2f", purchase.totalPrice)}", fontSize = 18.sp)
+            Text("Price: ${String.format(Locale.US, "%.2f", purchase.totalPrice)}", fontSize = 18.sp)
             Spacer(modifier = Modifier.height(12.dp))
             Text("Purchase Date: ${purchase.purchaseDate}", fontSize = 16.sp)
         }
